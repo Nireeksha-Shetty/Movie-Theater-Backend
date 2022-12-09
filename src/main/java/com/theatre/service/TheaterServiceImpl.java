@@ -17,8 +17,8 @@ import com.theatre.entity.Seat;
 import com.theatre.entity.SeatBooking;
 import com.theatre.entity.Theater;
 import com.theatre.exception.NoContentException;
-import com.theatre.exception.UserAlreadyExistException;
-import com.theatre.exception.UserNotFoundException;
+import com.theatre.exception.TheaterAlreadyExistException;
+import com.theatre.exception.TheaterNotFoundException;
 import com.theatre.mapper.RowDTOMapper;
 import com.theatre.mapper.TheaterDTOMapper;
 import com.theatre.mapper.TheaterListDTOMapper;
@@ -84,7 +84,7 @@ public class TheaterServiceImpl implements TheaterService{
 	}
 	
 	@Override
-	public String validateAndSaveTheater(TheaterDTO theaterDto) throws UserAlreadyExistException {
+	public String validateAndSaveTheater(TheaterDTO theaterDto) throws TheaterAlreadyExistException {
 		/*
 		 * 	Pseudo Code
 		 * 		1. Find all the theaters by Name
@@ -96,7 +96,7 @@ public class TheaterServiceImpl implements TheaterService{
 		
 		int id = -1;
 		if (theaterdetails != null) {
-			throw new UserAlreadyExistException("User Already Exists","DB0001");
+			throw new TheaterAlreadyExistException("User Already Exists","DB0001");
 		} else {
 			String message = saveTheater(theaterDto);
 			return message;
@@ -156,7 +156,7 @@ public class TheaterServiceImpl implements TheaterService{
 		return "Updated Successfully";
 	}
 
-	public String validateAndUpdateTheater(TheaterDTO theaterDto) throws UserNotFoundException {
+	public String validateAndUpdateTheater(TheaterDTO theaterDto) throws TheaterNotFoundException {
 		/*
 		 * Pseudo Code 1. Find all the theaters by Name 2. See if we have any rows with
 		 * same name already in Database 3. If yes throw error saying User Already
@@ -165,7 +165,7 @@ public class TheaterServiceImpl implements TheaterService{
 		TheaterDTO theaterdetails = findByname(theaterDto.getName());
 
 		if (theaterdetails == null) {
-			throw new UserNotFoundException("User Not Found", "DB0005");
+			throw new TheaterNotFoundException("User Not Found", "DB0005");
 		} else {
 			String message = updateTheater(theaterDto);
 			return message;
@@ -242,9 +242,9 @@ public List<TheaterDTO> getByCity(String city) throws NoContentException {
 		TheaterDTO theaterDto = theaterDTOMapper.convertToDto(theater);
 		return theaterDto;
 	}
-public TheaterDTO validateAndFind(String name) throws NoContentException {
+public List<TheaterDTO> validateAndFind(String name) throws NoContentException {
         
-        TheaterDTO theaterDetails = findByname(name);
+        List<TheaterDTO> theaterDetails = filterByname(name);
         if(theaterDetails == null) {
             throw new NoContentException("No theater available","DB000");
      }
@@ -273,4 +273,18 @@ public TheaterDTO validateAndFind(String name) throws NoContentException {
             }
     	
     }
+
+	@Override
+	public List<TheaterDTO> filterByname(String name) throws NoContentException {
+		// TODO Auto-generated method stub
+		List<Theater> theaters = theaterRepository.filterByName(name);
+		List<TheaterDTO> theatersDto = theaterlistDTOMapper.convertToDto(theaters);
+		
+		if (theaters.isEmpty()) {
+			throw new NoContentException("All theaters are currently unavailable", "DB001");
+		} else {
+			return theatersDto;
+		}
+	
+	}
 }

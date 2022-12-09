@@ -1,32 +1,32 @@
 package com.theatre.exception;
 
-public class UserNotFoundException extends Exception {
+public class TheaterNotFoundException extends Exception {
 	String Code;
-	public UserNotFoundException() {
+	public TheaterNotFoundException() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public UserNotFoundException(String message) {
+	public TheaterNotFoundException(String message) {
 		super(message);
 		// TODO Auto-generated constructor stub
 	}
 
-	public UserNotFoundException(Throwable cause) {
+	public TheaterNotFoundException(Throwable cause) {
 		super(cause);
 		// TODO Auto-generated constructor stub
 	}
 
-	public UserNotFoundException(String message, Throwable cause) {
+	public TheaterNotFoundException(String message, Throwable cause) {
 		super(message, cause);
 		// TODO Auto-generated constructor stub
 	}
 
-	public UserNotFoundException(String message, Throwable cause, boolean enableSuppression,
+	public TheaterNotFoundException(String message, Throwable cause, boolean enableSuppression,
 			boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 		// TODO Auto-generated constructor stub
 	}
-	public UserNotFoundException(String message,String code) {
+	public TheaterNotFoundException(String message,String code) {
 		super(message);
 		// TODO Auto-generated constructor stub
 		this.Code = code;

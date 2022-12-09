@@ -32,8 +32,8 @@ import com.theatre.entity.Seat;
 import com.theatre.entity.SeatBooking;
 import com.theatre.entity.Theater;
 import com.theatre.exception.NoContentException;
-import com.theatre.exception.UserAlreadyExistException;
-import com.theatre.exception.UserNotFoundException;
+import com.theatre.exception.TheaterAlreadyExistException;
+import com.theatre.exception.TheaterNotFoundException;
 import com.theatre.service.TheaterService;
 
 // Controller --> ServiceImpl [Service]
@@ -56,7 +56,7 @@ public class TheaterController {
 	 *  	GET : "http://localhost:9090/theater/All"
 	*/
 	
-	@GetMapping("/All")
+	@GetMapping("/all")
 	public ResponseEntity<List<TheaterDTO>> GET() {
 		
 	/*
@@ -106,7 +106,7 @@ public class TheaterController {
 			responseEntity = new ResponseEntity<String>(theaterService.validateAndSaveTheater(theater),HttpStatus.OK);
 //			theaterLogger.info("Theater Data has been successfully stored");
 		}
-		catch (UserAlreadyExistException e) {
+		catch (TheaterAlreadyExistException e) {
 			responseEntity = new ResponseEntity<String>(e.getCode()+" : "+e.getMessage(), HttpStatus.OK);
 			//theaterLogger.info(e.getCode()+" : "+e.getMessage());
 		}
@@ -141,7 +141,7 @@ public ResponseEntity<String> UPDATE(@RequestBody TheaterDTO theater) {
 			responseEntity = new ResponseEntity<String>(theaterService.validateAndUpdateTheater(theater),HttpStatus.OK);
 			//theaterLogger.info("Theater Data has been successfully stored");
 			}
-		catch (UserNotFoundException e) 
+		catch (TheaterNotFoundException e) 
 			{
 			responseEntity = new ResponseEntity<String>(e.getCode()+" : "+e.getMessage(), HttpStatus.OK);
 			//theaterLogger.error(e.getCode()+" : "+e.getMessage());
@@ -244,9 +244,9 @@ public ResponseEntity<?> GETBYCITY(@PathVariable("city") String city) {
 			List<TheaterDTO> theaterServiceTheaters = new ArrayList<TheaterDTO>();
 	        ResponseEntity<List<TheaterDTO>> responseEntity;
 	        try{
-	        	TheaterDTO theater_i = theaterService.validateAndFind(name);
-	        	theaterServiceTheaters.add(theater_i);	            
-	        	responseEntity = new ResponseEntity<List<TheaterDTO>>(theaterServiceTheaters, HttpStatus.OK);
+	        	List<TheaterDTO> theater_i = theaterService.validateAndFind(name);
+	        		            
+	        	responseEntity = new ResponseEntity<List<TheaterDTO>>(theater_i, HttpStatus.OK);
 	            //theaterLogger.info("Successful Retrieval of Theater Details");            
 	        }
 	        catch (NoContentException e) {
