@@ -94,7 +94,7 @@ public class TheaterServiceImpl implements TheaterService{
 		 */
 		TheaterDTO theaterdetails = findByname(theaterDto.getName());
 		
-		int id = -1;
+//		int id = -1;
 		if (theaterdetails != null) {
 			throw new TheaterAlreadyExistException("User Already Exists","DB0001");
 		} else {
@@ -109,18 +109,15 @@ public class TheaterServiceImpl implements TheaterService{
 		TheaterDTO theaterdetails = findByname(theaterDto.getName());
 		int id = theaterdetails.getId();
 		Address address = theaterdetails.getAddress();
-		theaterDto.setId(theaterdetails.getId());
 		Address add = theaterDto.getAddress();
-		List<Row> rowcontainer = theaterDto.getRow();
 		add.setId(address.getId());
+		List<Row> rowcontainer = theaterDto.getRow();
 		List<Row> row = theaterdetails.getRow();
 		List<Row> rowone = new ArrayList<Row>();
 		for (int i = 0; i < row.size(); i++) {
 			Row rowi = row.get(i);
 			Row rowj = rowcontainer.get(i);
 			if (rowi.getSeats() != null) {
-				List<Seat> seati = new ArrayList<Seat>();
-				seati = rowi.getSeats();
 				int totalseats = rowj.getTotalSeats();
 				List<Seat> listofseats = new ArrayList<Seat>();
 				for (int k = 0; k < totalseats; k++) {
@@ -128,19 +125,18 @@ public class TheaterServiceImpl implements TheaterService{
 					seat.setBooking(SeatBooking.NOTBOOKED);
 					listofseats.add(seat);
 				}
-
 				rowj.setSeats(listofseats);
 				rowcontainer.add(rowj);
+				List<Seat> seati = new ArrayList<Seat>();
+				seati = rowi.getSeats();
 				List<Seat> seatj = new ArrayList<Seat>();
 				seatj = rowj.getSeats();
 				for (int j = 0; j < seati.size(); j++) {
-					if (seati.get(j) != null && seati.get(j) != null) {
+					if (seati.get(j) != null && seatj.get(j) != null) {
 
 						Seat IndividualSeatj = seatj.get(j);
 						Seat IndividualSeati = seati.get(j);
 						IndividualSeatj.setId(IndividualSeati.getId());
-						System.out.print(IndividualSeatj);
-						System.out.print(IndividualSeati);
 					}
 					rowj.setSeats(seatj);
 					rowj.setId(rowi.getId());

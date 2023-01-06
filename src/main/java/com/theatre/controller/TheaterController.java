@@ -8,7 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.criteria.Fetch;
 import javax.persistence.criteria.From;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 //springframework imports
 import org.springframework.beans.factory.annotation.Autowired;
